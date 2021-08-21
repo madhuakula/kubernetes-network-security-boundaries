@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-from-count-app
+  namespace: cache-db-ns
+spec:
+  podSelector:
+    matchLabels:
+      app: cache-db
+  policyTypes:
+    - Ingress
+  ingress:
+  # - ports:
+  #   - port: 6379
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            ns: count-app-ns
+        podSelector:
+          matchLabels:
+            app: count-app
